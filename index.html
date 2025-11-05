@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Widget Test</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Container to control size and positioning */
+    .chat-widget-wrapper {
+      position: fixed;
+      z-index: 9999;
+      bottom: 20px;
+      right: 20px;
+      width: 600px;
+      height: 800px;
+      display: flex;
+      justify-content: center; /* horizontal centering */
+      align-items: center;     /* vertical centering */
+      transition: all 0.3s ease;
+      border-radius: 12px;
+    }
+
+    /* Inner chat box forced to full size of container */
+    .chat-widget-wrapper .n8n-chat-widget {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 12px !important;
+    }
+
+    /* Mobile overrides */
+    @media (max-width: 768px) {
+      .chat-widget-wrapper {
+        width: 95vw;
+        height: 90vh;
+        bottom: 5px;
+        right: 5px;
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-widget-wrapper">
+    <!-- Widget will load here -->
+    <div class="n8n-chat-widget"></div>
+  </div>
+
+  <script>
+    window.ChatWidgetConfig = {
+      webhook: {
+        url: 'https://jenniferbalauru.app.n8n.cloud/webhook/039cf66c-8c9f-4134-bd5f-d1da2fdee73e/chat',
+        route: 'general'
+      },
+      branding: {
+        logo: 'https://i.postimg.cc/QCNFTm5K/IMG-1895-removebg-preview.png',
+        name: 'EasyBooker.io',
+        welcomeText: 'Hi 👋, how can we help?',
+        responseTimeText: 'We usually respond right away'
+      },
+      style: {
+        primaryColor: '#54dde4',
+        secondaryColor: '#172565',
+        backgroundColor: '#ffffff',
+        fontColor: '#333333',
+        userMessageColor: '#0066ff',
+        userTextColor: '#ffffff',
+        botMessageColor: '#f1f3f4',
+        botTextColor: '#000000',
+        borderRadius: '12px',
+        fontFamily: 'Inter, sans-serif'
+      }
+    };
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/WayneSimpson/n8n-chatbot-template@ba944c3/chat-widget.js';
+    script.onload = () => {
+      const wrapper = document.querySelector('.chat-widget-wrapper');
+
+      // Ensure the inner widget fills the wrapper
+      const observer = new MutationObserver((mutations, obs) => {
+        const widget = document.querySelector('.n8n-chat-widget');
+        if (widget) {
+          widget.style.setProperty('width', '100%', 'important');
+          widget.style.setProperty('height', '100%', 'important');
+          obs.disconnect();
+        }
+      });
+      observer.observe(wrapper, { childList: true, subtree: true });
+    };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
